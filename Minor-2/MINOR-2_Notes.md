@@ -1,3 +1,32 @@
+#### MOA 
+- Consists of 5k drugs
+- 100 different _Cells_ 
+- **Help scientists in advance drug discovery process**
+- Gene expression, cell viability data, and drug labels
+Categorical Features
+ :Sign id, gene expression (772 are useful), cells (c0-c99),cp_type, cp_time and cp_dose
+    
+Gene Expression
+ :the process by which the information encoded in a gene is turned into a function
+ 
+Cell Viability
+ :Cell viability is a measure of the proportion of live, healthy cells within a population
+
+Classification
+ :**Inhibitor - inhibitor is a substance that slows or blocks the action of an enzyme.**
+ **Antagonist - antagonist is a substance that stops the effect of another substance.**
+ **Agonist - agonist is a substance that mimics the actions of a hormone or neurotransmitter, 
+          and produces a response when it binds to a receptor in the brain.**
+
+#### Algorithms:
+1. Logistic Regression
+2. Random Forest Classifier
+3. _**Gradient Boosting Classifier 70%**_
+4. GaussianNB
+5. XGBoost
+6. LightGBM
+#### Sample Code:
+
 ```python
 import pandas as pd
 import numpy as np
