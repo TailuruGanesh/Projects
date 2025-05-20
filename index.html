@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CGPA & GPA Calculator</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
@@ -10,7 +10,7 @@
       --primary: #1f2d69;
       --secondary: #4c8acb;
       --accent: #c3002f;
-      --bg-light: #f2f22;
+      --bg-light: #f2f2f2;
       --text-dark: #333333;
       --card-bg: #ffffff;
       --row-alt: #f9f9f9;
@@ -28,52 +28,60 @@
       background: var(--primary);
       padding: 16px 0;
       position: fixed;
+      top: 0;
       width: 100%;
       box-shadow: 0 4px 10px var(--shadow);
       z-index: 100;
     }
     .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; }
     .logo { font-size: 1.8rem; font-weight: 700; color: #fff; }
-    main { padding-top: 100px; display: flex; justify-content: center; align-items: flex-start; }
-    .hero { background: var(--secondary); color: #fff; padding: 80px 24px 60px; text-align: center; background-image: var(--button-gradient); clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%); }
+    main {
+      padding: 120px 24px 40px; /* increased top padding for header */
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .hero {
+      background: var(--secondary);
+      color: #fff;
+      padding: 60px 16px 40px;
+      text-align: center;
+      background-image: var(--button-gradient);
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%);
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 40px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px var(--shadow);
+    }
     .hero h1 { font-size: 2.2rem; margin-bottom: 12px; }
     .hero p { font-size: 1rem; max-width: 500px; margin: 0 auto 24px; }
-    .section { max-width: 800px; margin: 40px auto; padding: 0 24px; width: 100%; }
-    .calculator-card {
+    .section {
+      max-width: 800px;
+      width: 100%;
       background: var(--card-bg);
+      padding: 32px 24px;
+      margin: 0 0 40px;
       border-radius: 24px;
       box-shadow: 0 16px 40px var(--shadow);
-      padding: 32px;
-      transform-style: preserve-3d;
-      /* Removed animation and transition */
     }
-    .calculator-card:hover {
-      /* Removed hover transform and shadow */
-      transform: none;
-      box-shadow: 0 16px 40px var(--shadow);
+    .calculator-card {
+      transform-style: preserve-3d;
     }
     .mode-buttons { text-align: center; margin-bottom: 24px; }
     .mode-buttons button {
       margin: 0 8px;
-      padding: 10px 20px;
+      padding: 10px 16px;
       border: none;
       border-radius: 32px;
       cursor: pointer;
       background: var(--bg-light);
       color: var(--text-dark);
       font-weight: 500;
-      box-shadow: 0 4px 8px var(--shadow);
-      /* Removed transition */
-    }
-    .mode-buttons button:hover {
-      /* Removed hover animation */
-      transform: none;
-      box-shadow: 0 4px 8px var(--shadow);
     }
     .mode-buttons button.active {
       background: var(--button-gradient);
       color: #fff;
-      box-shadow: 0 6px 18px var(--shadow);
     }
     .table-header, .subject-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; align-items: center; }
     .table-header { margin-bottom: 10px; font-weight: 600; text-transform: uppercase; color: var(--primary); }
@@ -82,10 +90,8 @@
       margin-bottom: 6px;
       padding: 10px;
       border-radius: 12px;
-      box-shadow: 0 2px 6px var(--shadow);
-      transition: background 0.3s ease;
     }
-    .subject-row:hover { background: var(--row-alt); }
+    .subject-row:nth-child(even) { background: var(--row-alt); }
     .subject-row input, .subject-row select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
     .controls { display: flex; justify-content: center; gap: 12px; margin: 24px 0; }
     .controls button {
@@ -95,13 +101,6 @@
       padding: 10px 16px;
       border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 4px 8px var(--shadow);
-      /* Removed transition */
-    }
-    .controls button:hover {
-      /* Removed hover animation */
-      transform: none;
-      box-shadow: 0 4px 8px var(--shadow);
     }
     .calculate {
       width: 100%;
@@ -112,29 +111,26 @@
       font-size: 1rem;
       border-radius: 12px;
       cursor: pointer;
-      box-shadow: 0 6px 12px var(--shadow);
-      /* Removed transition */
     }
-    .calculate:hover {
-      /* Removed hover animation */
-      transform: none;
-      box-shadow: 0 6px 12px var(--shadow);
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 1.1rem;
+    .result { margin-top: 20px; font-size: 1.1rem; text-align: center; }
+    footer {
+      background: var(--primary);
+      color: #fff;
+      padding: 16px;
       text-align: center;
-      opacity: 1;
-      /* Removed animation */
+      font-size: 0.8rem;
     }
-    footer { background: var(--primary); color: #fff; padding: 16px; text-align: center; font-size: 0.8rem; margin-top: 40px; }
-    @media (max-width:600px) {
-      .hero h1 { font-size: 1.6rem; }
+    @media (max-width: 600px) {
+      main { flex-direction: column; align-items: center; padding: 100px 16px 20px; }
+      .hero { padding: 40px 12px 30px; }
+      .hero h1 { font-size: 1.8rem; }
       .hero p { font-size: 0.9rem; }
-      .calculator-card { padding: 20px; }
-      .mode-buttons button { padding: 8px 16px; margin: 0 4px; }
+      .section { padding: 20px 12px; margin: 0 0 30px; }
+      .calculator-card { padding: 0; }
+      .mode-buttons button { padding: 8px 12px; margin: 0 4px; font-size: 0.9rem; }
       .table-header, .subject-row { grid-template-columns: 1fr; }
-      .controls, .mode-buttons { flex-direction: column; gap: 8px; }
+      .controls { flex-direction: column; gap: 8px; }
+      .calculate { padding: 10px; font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -148,8 +144,8 @@
     <section class="section">
       <div class="calculator-card">
         <div class="mode-buttons">
-          <button id="gpaBtn" class="active">GPA </button>
-          <button id="cgpaBtn">CGPA </button>
+          <button id="gpaBtn" class="active">GPA</button>
+          <button id="cgpaBtn">CGPA</button>
         </div>
         <div class="table-header" id="tableHeader"></div>
         <div id="inputRows"></div>
@@ -224,7 +220,7 @@
     }
 
     gpaBtn.addEventListener("click", () => { mode="gpa"; gpaBtn.classList.add("active"); cgpaBtn.classList.remove("active"); renderTable(); resetToSingleRow(); });
-    cgpaBtn.addEventListener("click", () => { mode="cgpa"; cgpaBtn.classList.add("active"); gpaBtn.classList.remove("active"); renderTable(); resetToSingleRow(); });
+    cgpaBtn.addEventListener("click", () => { mode="cgpa"; cgpiBtn.classList.add("active"); gpaBtn.classList.remove("active"); renderTable(); resetToSingleRow(); });
     clearBtn.addEventListener("click", clearRows);
     calculateBtn.addEventListener("click", calculate);
 
