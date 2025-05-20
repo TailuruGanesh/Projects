@@ -236,7 +236,7 @@
           const g=r.children[2].value;
           if(gradeMap[g]!==undefined){ totalPts+=gradeMap[g]*c; totalCred+=c; }
         });
-        if(totalCred>0){ const gpa=(totalPts/totalCred).toFixed(2); const pct=(gpa*9.5).toFixed(2); output=`<p>Your GPA: <strong>${gpa}</strong></p><p>Percentage: <strong>${pct}%</strong></p>`; }
+        if(totalCred>0){ const gpa=(totalPts/totalCred).toFixed(2); const pct=(gpa*10).toFixed(2); output=`<p>Your GPA: <strong>${gpa}</strong></p><p>Percentage: <strong>${pct}%</strong></p>`; }
         else output="<p>Please enter valid credits and grades.</p>";
       } else {
         let sum=0,count=0;
