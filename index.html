@@ -78,6 +78,20 @@
       background: var(--bg-light);
       color: var(--text-dark);
       font-weight: 500;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+      outline: none;
+    }
+    /* Hover and focus styles for desktop */
+    .mode-buttons button:hover,
+    .mode-buttons button:focus {
+      background: var(--secondary);
+      color: #fff;
+    }
+    /* Active style for mobile "hover" simulation */
+    .mode-buttons button:active {
+      background: var(--primary);
+      color: #fff;
     }
     .mode-buttons button.active {
       background: var(--button-gradient);
@@ -101,6 +115,13 @@
       padding: 10px 16px;
       border-radius: 10px;
       cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .controls button:hover,
+    .controls button:focus {
+      background: #a20024;
+      outline: none;
     }
     .calculate {
       width: 100%;
@@ -111,6 +132,13 @@
       font-size: 1rem;
       border-radius: 12px;
       cursor: pointer;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .calculate:hover,
+    .calculate:focus {
+      background: #163061;
+      outline: none;
     }
     .result { margin-top: 20px; font-size: 1.1rem; text-align: center; }
     footer {
@@ -219,13 +247,28 @@
       resultDisplay.innerHTML = output;
     }
 
-    gpaBtn.addEventListener("click", () => { mode="gpa"; gpaBtn.classList.add("active"); cgpaBtn.classList.remove("active"); renderTable(); resetToSingleRow(); });
-    cgpaBtn.addEventListener("click", () => { mode="cgpa"; cgpiBtn.classList.add("active"); gpaBtn.classList.remove("active"); renderTable(); resetToSingleRow(); });
+    gpaBtn.addEventListener("click", () => {
+      mode = "gpa";
+      gpaBtn.classList.add("active");
+      cgpaBtn.classList.remove("active");
+      renderTable();
+      resetToSingleRow();
+    });
+
+    cgpaBtn.addEventListener("click", () => {
+      mode = "cgpa";
+      cgpaBtn.classList.add("active");
+      gpaBtn.classList.remove("active");
+      renderTable();
+      resetToSingleRow();
+    });
+
     clearBtn.addEventListener("click", clearRows);
     calculateBtn.addEventListener("click", calculate);
 
     // Initialize
-    renderTable(); addRow();
+    renderTable();
+    addRow();
   </script>
 </body>
 </html>
