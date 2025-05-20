@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CGPA & GPA Calculator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #1f2d69;
+      --secondary: #4c8acb;
+      --accent: #c3002f;
+      --bg-light: #f2f22;
+      --text-dark: #333333;
+      --card-bg: #ffffff;
+      --row-alt: #f9f9f9;
+      --button-gradient: linear-gradient(135deg, #1f2d69, #4c8acb);
+      --shadow: rgba(0, 0, 0, 0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      perspective: 1000px;
+    }
+    header {
+      background: var(--primary);
+      padding: 16px 0;
+      position: fixed;
+      width: 100%;
+      box-shadow: 0 4px 10px var(--shadow);
+      z-index: 100;
+    }
+    .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; }
+    .logo { font-size: 1.8rem; font-weight: 700; color: #fff; }
+    main { padding-top: 100px; display: flex; justify-content: center; align-items: flex-start; }
+    .hero { background: var(--secondary); color: #fff; padding: 80px 24px 60px; text-align: center; background-image: var(--button-gradient); clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%); }
+    .hero h1 { font-size: 2.2rem; margin-bottom: 12px; }
+    .hero p { font-size: 1rem; max-width: 500px; margin: 0 auto 24px; }
+    .section { max-width: 800px; margin: 40px auto; padding: 0 24px; width: 100%; }
+    .calculator-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 16px 40px var(--shadow);
+      padding: 32px;
+      transform-style: preserve-3d;
+      /* Removed animation and transition */
+    }
+    .calculator-card:hover {
+      /* Removed hover transform and shadow */
+      transform: none;
+      box-shadow: 0 16px 40px var(--shadow);
+    }
+    .mode-buttons { text-align: center; margin-bottom: 24px; }
+    .mode-buttons button {
+      margin: 0 8px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 32px;
+      cursor: pointer;
+      background: var(--bg-light);
+      color: var(--text-dark);
+      font-weight: 500;
+      box-shadow: 0 4px 8px var(--shadow);
+      /* Removed transition */
+    }
+    .mode-buttons button:hover {
+      /* Removed hover animation */
+      transform: none;
+      box-shadow: 0 4px 8px var(--shadow);
+    }
+    .mode-buttons button.active {
+      background: var(--button-gradient);
+      color: #fff;
+      box-shadow: 0 6px 18px var(--shadow);
+    }
+    .table-header, .subject-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 12px; align-items: center; }
+    .table-header { margin-bottom: 10px; font-weight: 600; text-transform: uppercase; color: var(--primary); }
+    .subject-row {
+      background: var(--card-bg);
+      margin-bottom: 6px;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px var(--shadow);
+      transition: background 0.3s ease;
+    }
+    .subject-row:hover { background: var(--row-alt); }
+    .subject-row input, .subject-row select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; }
+    .controls { display: flex; justify-content: center; gap: 12px; margin: 24px 0; }
+    .controls button {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px var(--shadow);
+      /* Removed transition */
+    }
+    .controls button:hover {
+      /* Removed hover animation */
+      transform: none;
+      box-shadow: 0 4px 8px var(--shadow);
+    }
+    .calculate {
+      width: 100%;
+      padding: 12px;
+      background: var(--button-gradient);
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 12px var(--shadow);
+      /* Removed transition */
+    }
+    .calculate:hover {
+      /* Removed hover animation */
+      transform: none;
+      box-shadow: 0 6px 12px var(--shadow);
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.1rem;
+      text-align: center;
+      opacity: 1;
+      /* Removed animation */
+    }
+    footer { background: var(--primary); color: #fff; padding: 16px; text-align: center; font-size: 0.8rem; margin-top: 40px; }
+    @media (max-width:600px) {
+      .hero h1 { font-size: 1.6rem; }
+      .hero p { font-size: 0.9rem; }
+      .calculator-card { padding: 20px; }
+      .mode-buttons button { padding: 8px 16px; margin: 0 4px; }
+      .table-header, .subject-row { grid-template-columns: 1fr; }
+      .controls, .mode-buttons { flex-direction: column; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+  <header><div class="nav-container"><div class="logo">GPA & CGPA Calculator</div></div></header>
+  <main>
+    <section class="hero">
+      <h1>Academic Performance Calculator</h1>
+      <p>Compute your GPA or CGPA with selected grading schemes.</p>
+    </section>
+    <section class="section">
+      <div class="calculator-card">
+        <div class="mode-buttons">
+          <button id="gpaBtn" class="active">GPA </button>
+          <button id="cgpaBtn">CGPA </button>
+        </div>
+        <div class="table-header" id="tableHeader"></div>
+        <div id="inputRows"></div>
+        <div class="controls">
+          <button id="clearRows">Clear</button>
+        </div>
+        <button class="calculate" id="calculateBtn">Calculate</button>
+        <div class="result" id="resultDisplay"></div>
+      </div>
+    </section>
+  </main>
+  <footer>&copy; GPA & CGPA Calculator</footer>
+  <script>
+    const tableHeader = document.getElementById("tableHeader");
+    const inputRows = document.getElementById("inputRows");
+    const gpaBtn = document.getElementById("gpaBtn");
+    const cgpaBtn = document.getElementById("cgpaBtn");
+    const clearBtn = document.getElementById("clearRows");
+    const calculateBtn = document.getElementById("calculateBtn");
+    const resultDisplay = document.getElementById("resultDisplay");
+    let mode = "gpa";
+
+    function renderTable() {
+      tableHeader.innerHTML = mode === "gpa"
+        ? "<div>Subject</div><div>Credits</div><div>Grade</div>"
+        : "<div>Semester</div><div>GPA</div><div></div>";
+    }
+
+    function addRow() {
+      const row = document.createElement("div");
+      row.className = "subject-row";
+      row.innerHTML = mode === "gpa"
+        ? '<input type="text" placeholder="Subject Name" /><input type="number" placeholder="Credits" min="0" /><select><option>S</option><option>A</option><option>B</option><option>C</option><option>D</option></select>'
+        : '<input type="text" placeholder="Semester" /><input type="number" placeholder="GPA" step="0.01" max="10" min="0" /><div></div>';
+      row.querySelector('input[type="number"]').addEventListener("input", () => {
+        if (row === inputRows.lastElementChild) addRow();
+      });
+      inputRows.appendChild(row);
+    }
+
+    function clearRows() {
+      const rows = inputRows.querySelectorAll(".subject-row");
+      if (rows.length > 1) inputRows.removeChild(rows[rows.length - 1]);
+      resultDisplay.innerHTML = "";
+    }
+
+    function resetToSingleRow() {
+      while (inputRows.firstChild) inputRows.removeChild(inputRows.firstChild);
+      addRow();
+    }
+
+    function calculate() {
+      let output = "";
+      const rows = inputRows.querySelectorAll(".subject-row");
+      if (mode === "gpa") {
+        const gradeMap = { S:10,A:9,B:8,C:7,D:6 };
+        let totalPts=0, totalCred=0;
+        rows.forEach(r=>{
+          const c=parseFloat(r.children[1].value)||0;
+          const g=r.children[2].value;
+          if(gradeMap[g]!==undefined){ totalPts+=gradeMap[g]*c; totalCred+=c; }
+        });
+        if(totalCred>0){ const gpa=(totalPts/totalCred).toFixed(2); const pct=(gpa*9.5).toFixed(2); output=`<p>Your GPA: <strong>${gpa}</strong></p><p>Percentage: <strong>${pct}%</strong></p>`; }
+        else output="<p>Please enter valid credits and grades.</p>";
+      } else {
+        let sum=0,count=0;
+        rows.forEach(r=>{ const v=parseFloat(r.children[1].value); if(!isNaN(v)){ sum+=v; count++; }});
+        if(count>0){ const cgpa=(sum/count).toFixed(2); const pct=(cgpa*9.5).toFixed(2); output=`<p>Your CGPA: <strong>${cgpa}</strong></p><p>Percentage: <strong>${pct}%</strong></p>`; }
+        else output="<p>Please enter valid GPA values.</p>";
+      }
+      resultDisplay.innerHTML = output;
+    }
+
+    gpaBtn.addEventListener("click", () => { mode="gpa"; gpaBtn.classList.add("active"); cgpaBtn.classList.remove("active"); renderTable(); resetToSingleRow(); });
+    cgpaBtn.addEventListener("click", () => { mode="cgpa"; cgpaBtn.classList.add("active"); gpaBtn.classList.remove("active"); renderTable(); resetToSingleRow(); });
+    clearBtn.addEventListener("click", clearRows);
+    calculateBtn.addEventListener("click", calculate);
+
+    // Initialize
+    renderTable(); addRow();
+  </script>
+</body>
+</html>
